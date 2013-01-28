@@ -1,0 +1,2 @@
+$ ruby make_categories.rb
+$ ./runloop.sh
