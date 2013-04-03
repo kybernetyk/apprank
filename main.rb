@@ -16,8 +16,10 @@ categories.each { |cat|
 	crawler.crawl_category_by_id(cat.id)
 	puts("we have " + crawler.gross_apps.count.to_s + " entries")
 
-	crawler.gross_apps.select { |app|
-		app.artist.downcase.include?("szpilewski")
+	allapps = crawler.gross_apps + crawler.paid_apps
+
+	allapps.select { |app|
+		app.artist.downcase.include?("szpilewski") or app.artist.downcase.include?("minyx")
 	}.each { |app|
 		PP.pp(app)
 	}

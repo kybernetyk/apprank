@@ -12,7 +12,6 @@ module Nutte
 		end
 
 		def make_date(date_string)
-			#DateTime.strptime(date_string, '%Y-%m-%dT%H:%M:%S%z')
 			DateTime.parse(date_string)
 		end
 
@@ -39,8 +38,7 @@ module Nutte
   		}
   	end
 
-  	def get_gross_entries(category_id)
-  	  #category_id = 12011
+		def get_gross_entries(category_id)
   	  url = "https://itunes.apple.com/us/rss/topgrossingmacapps/limit=300/genre=" << category_id.to_s << "/json"
   		jsondata = open(url).read()
   		parsed = JSON.parse(jsondata)
@@ -48,23 +46,22 @@ module Nutte
   	end
 
 		def get_paid_entries(category_id)
-  	  #category_id = 12011
   	  url = "https://itunes.apple.com/us/rss/toppaidmacapps/limit=300/genre=" << category_id.to_s << "/json"
   		jsondata = open(url).read()
   		parsed = JSON.parse(jsondata)
   		parsed['feed']['entry']
   	end
 
-
   	:public
   	def crawl_category_by_id(category_id)
 			storage = Storage.new
 
-  		crawl = storage.new_crawl
+  		crawl = storage.new_crawl(category_id)
 			@crawl_id = crawl.id
 			@crawl_date = crawl.timestamp
 
   		paid_entries = get_paid_entries(category_id)
+
   		@paid_apps = make_apps(paid_entries)
 			gross_entries = get_gross_entries(category_id)
 			@gross_apps = make_apps(gross_entries)
